@@ -1,0 +1,16 @@
+# services:
+#   travel_bus_fe-app:
+#     image: travel_bus_fe:1.0
+#     ports:
+#       - "6000:6000"
+#     env_file:
+#       - .env
+  
+services:
+  emcomserv_fe-app:
+    image: emcomserv_fe:1.0
+    ports:
+      - "8000:8000"
+#    env_file:
+#      - .env
+#    network_mode: host
