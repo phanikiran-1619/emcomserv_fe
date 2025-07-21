@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:20-alpine
 
 # Set the working directory
 WORKDIR /app
@@ -12,14 +12,8 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
-# Build the React app
-RUN npm run build
-
-# Install serve to run the production build
-RUN npm install -g serve
-
-# Expose the port the app will run on
+# Expose the port used by the development server
 EXPOSE 8000
 
-# Command to serve the build folder
-CMD ["serve", "-s", "build", "-l", "8000"]
+# Start the development server
+CMD ["npm", "start"]
