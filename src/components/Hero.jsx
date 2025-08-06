@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ArrowRight, Cloud, Network, Brain, Handshake, Cpu } from 'lucide-react';
 
 const Hero = () => {
@@ -8,15 +8,6 @@ const Hero = () => {
       element.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
-  // Circuit board nodes for animation
-  const circuitNodes = Array.from({ length: 20 }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    delay: Math.random() * 3,
-    duration: 2 + Math.random() * 3,
-  }));
 
   // Floating icons configuration
   const floatingIcons = [
@@ -108,24 +99,6 @@ const Hero = () => {
         <div className="absolute inset-0 opacity-40">
           <div className="circuit-grid"></div>
         </div>
-
-        {/* Floating Circuit Nodes */}
-        {circuitNodes.map((node) => (
-          <div
-            key={node.id}
-            className="absolute bg-blue-500 rounded-full animate-pulse-circuit"
-            style={{
-              left: `${node.x}%`,
-              top: `${node.y}%`,
-              width: `clamp(0.8vw, 1.2vw, 1.5vw)`,
-              height: `clamp(0.8vw, 1.2vw, 1.5vw)`,
-              animationDelay: `${node.delay}s`,
-              animationDuration: `${node.duration}s`,
-            }}
-          >
-            <div className="absolute inset-0 bg-blue-500 rounded-full animate-ping opacity-30"></div>
-          </div>
-        ))}
 
         {/* Animated Circuit Lines */}
         <svg className="absolute inset-0 w-full h-full opacity-20" preserveAspectRatio="none">
@@ -232,11 +205,6 @@ const Hero = () => {
         @keyframes grid-move {
           0% { transform: translate(0, 0); }
           100% { transform: translate(clamp(40px, 5vw, 60px), clamp(40px, 5vw, 60px)); }
-        }
-
-        @keyframes pulse-circuit {
-          0%, 100% { opacity: 0.4; transform: scale(1); }
-          50% { opacity: 1; transform: scale(1.8); }
         }
 
         @keyframes circuit-flow {
@@ -377,7 +345,6 @@ const Hero = () => {
           }
         }
 
-        .animate-pulse-circuit { animation: pulse-circuit 2.5s infinite; }
         .animate-circuit-flow { animation: circuit-flow 10s linear infinite; }
         .animate-circuit-flow-2 { animation: circuit-flow-2 12s linear infinite; }
         .animate-fade-in-up { animation: fade-in-up 1.5s ease-out forwards; }
