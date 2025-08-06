@@ -35,8 +35,8 @@ const Hero = () => {
             style={{
               left: `${node.x}%`,
               top: `${node.y}%`,
-              width: `clamp(0.5vw, 0.75vw, 1vw)`,
-              height: `clamp(0.5vw, 0.75vw, 1vw)`,
+              width: `clamp(0.8vw, 1.2vw, 1.5vw)`,
+              height: `clamp(0.8vw, 1.2vw, 1.5vw)`,
               animationDelay: `${node.delay}s`,
               animationDuration: `${node.duration}s`,
             }}
@@ -78,21 +78,21 @@ const Hero = () => {
 
         {/* Electronic Components (Responsive) */}
         <div className="absolute top-[5vw] left-[5vw] border-2 border-blue-500/60 bg-white/80 backdrop-blur-sm rounded-xl animate-glow-pulse shadow-lg"
-             style={{ width: `clamp(3vw, 4vw, 5vw)`, height: `clamp(3vw, 4vw, 5vw)` }}>
-          <Cpu className="w-full h-full p-[0.5vw] text-blue-600" />
+             style={{ width: `clamp(5vw, 7vw, 9vw)`, height: `clamp(5vw, 7vw, 9vw)` }}>
+          <Cpu className="w-full h-full p-[0.8vw] text-blue-600" />
         </div>
         <div className="absolute top-[10vw] right-[5vw] border-2 border-purple-500/60 bg-white/80 backdrop-blur-sm rounded-full animate-spin-slow shadow-lg"
-             style={{ width: `clamp(2.5vw, 3.5vw, 4.5vw)`, height: `clamp(2.5vw, 3.5vw, 4.5vw)` }}>
-          <Zap className="w-full h-full p-[0.5vw] text-purple-600" />
+             style={{ width: `clamp(4vw, 6vw, 8vw)`, height: `clamp(4vw, 6vw, 8vw)` }}>
+          <Zap className="w-full h-full p-[0.8vw] text-purple-600" />
         </div>
         <div className="absolute bottom-[5vw] left-[5vw] border-2 border-cyan-500/60 bg-white/80 backdrop-blur-sm rounded-xl animate-bounce-slow shadow-lg"
-             style={{ width: `clamp(2.5vw, 3.5vw, 4.5vw)`, height: `clamp(2.5vw, 3.5vw, 4.5vw)` }}>
-          <Wifi className="w-full h-full p-[0.5vw] text-cyan-600" />
+             style={{ width: `clamp(4vw, 6vw, 8vw)`, height: `clamp(4vw, 6vw, 8vw)` }}>
+          <Wifi className="w-full h-full p-[0.8vw] text-cyan-600" />
         </div>
         <div className="absolute bottom-[5vw] right-[5vw] border-2 border-indigo-500/60 bg-white/80 backdrop-blur-sm rounded-lg animate-float-shape shadow-lg"
-             style={{ width: `clamp(2.5vw, 3.5vw, 4.5vw)`, height: `clamp(2.5vw, 3.5vw, 4.5vw)` }}>
-          <div className="border-2 border-indigo-600 rounded-sm m-[0.5vw]"
-               style={{ width: `clamp(1.5vw, 2vw, 2.5vw)`, height: `clamp(1.5vw, 2vw, 2.5vw)` }}></div>
+             style={{ width: `clamp(4vw, 6vw, 8vw)`, height: `clamp(4vw, 6vw, 8vw)` }}>
+          <div className="border-2 border-indigo-600 rounded-sm m-[0.8vw]"
+               style={{ width: `clamp(2.5vw, 3.5vw, 4.5vw)`, height: `clamp(2.5vw, 3.5vw, 4.5vw)` }}></div>
         </div>
       </div>
 
@@ -139,7 +139,7 @@ const Hero = () => {
           background-image: 
             linear-gradient(rgba(59, 130, 246, 0.15) 1px, transparent 1px),
             linear-gradient(90deg, rgba(59, 130, 246, 0.15) 1px, transparent 1px);
-          background-size: clamp(40px, 5vw, 60px) clamp(40px, 5vw, 60px);
+          background-size: clamp(40px, 6vw, 60px) clamp(40px, 6vw, 60px);
           width: 100%;
           height: 100%;
           animation: grid-move 25s linear infinite;
@@ -147,7 +147,7 @@ const Hero = () => {
 
         @keyframes grid-move {
           0% { transform: translate(0, 0); }
-          100% { transform: translate(clamp(40px, 5vw, 60px), clamp(40px, 5vw, 60px)); }
+          100% { transform: translate(clamp(40px, 6vw, 60px), clamp(40px, 6vw, 60px)); }
         }
 
         @keyframes pulse-circuit {
@@ -167,11 +167,11 @@ const Hero = () => {
 
         @keyframes glow-pulse {
           0%, 100% { 
-            box-shadow: 0 0 clamp(10px, 2vw, 20px) rgba(59, 130, 246, 0.2), 0 0 clamp(20px, 4vw, 40px) rgba(59, 130, 246, 0.1);
+            box-shadow: 0 0 clamp(15px, 3vw, 30px) rgba(59, 130, 246, 0.2), 0 0 clamp(30px, 6vw, 60px) rgba(59, 130, 246, 0.1);
             transform: scale(1);
           }
           50% { 
-            box-shadow: 0 0 clamp(15px, 3vw, 30px) rgba(59, 130, 246, 0.4), 0 0 clamp(30px, 6vw, 60px) rgba(59, 130, 246, 0.2);
+            box-shadow: 0 0 clamp(20px, 4vw, 40px) rgba(59, 130, 246, 0.4), 0 0 clamp(40px, 8vw, 80px) rgba(59, 130, 246, 0.2);
             transform: scale(1.05);
           }
         }
@@ -183,12 +183,12 @@ const Hero = () => {
 
         @keyframes bounce-slow {
           0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(clamp(-8px, -1.5vw, -12px)); }
+          50% { transform: translateY(clamp(-10px, -2vw, -15px)); }
         }
 
         @keyframes float-shape {
           0%, 100% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(clamp(-20px, -3vw, -30px)) rotate(180deg); }
+          50% { transform: translateY(clamp(-25px, -4vw, -35px)) rotate(180deg); }
         }
 
         @keyframes fade-in-up {
@@ -213,11 +213,11 @@ const Hero = () => {
 
         @media (max-width: 640px) {
           .circuit-grid {
-            background-size: 30px 30px;
+            background-size: 35px 35px;
           }
           @keyframes grid-move {
             0% { transform: translate(0, 0); }
-            100% { transform: translate(30px, 30px); }
+            100% { transform: translate(35px, 35px); }
           }
         }
       `}</style>
