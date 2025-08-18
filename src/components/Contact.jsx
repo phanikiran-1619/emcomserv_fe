@@ -18,6 +18,7 @@ const Contact = () => {
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -30,16 +31,43 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Mock submission - replace with actual API call
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      toast({
-        title: "Message Sent Successfully! ✨",
-        description: "We'll get back to you within 24 hours. Thank you for reaching out!",
-        duration: 5000,
+      // Prepare payload according to API spec
+      const apiData = {
+        fullName: formData.name,
+        phoneNumber: formData.phone.replace(/\D/g, ''), // only digits
+        email: formData.email,
+        subject: formData.subject,
+        description: formData.message
+      };
+
+      // Call the API using environment variable
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/emc-users`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': '*/*'
+        },
+        body: JSON.stringify(apiData)
       });
+
+      let responseData = null;
+      try {
+        responseData = await response.json();
+      } catch {
+        responseData = {};
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          responseData.message || `Failed (Status ${response.status})`
+        );
+      }
+
+      // Show success modal only if status is 200
+      if (response.status === 200) {
+        setShowSuccessModal(true);
+      }
 
       // Reset form
       setFormData({
@@ -49,10 +77,12 @@ const Contact = () => {
         subject: '',
         message: ''
       });
+
     } catch (error) {
+      console.error('API Error:', error);
       toast({
         title: "Error",
-        description: "Failed to send message. Please try again.",
+        description: error.message || "Failed to send message. Please try again later.",
         variant: "destructive",
       });
     } finally {
@@ -64,13 +94,33 @@ const Contact = () => {
     <div className="min-h-screen bg-white">
       <Header />
       
-      {/* Hero Section */}
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl animate-pop-in">
+            <div className="text-center">
+              <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-6">
+                <CheckCircle className="h-10 w-10 text-green-600" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">Message Sent Successfully!</h3>
+              <p className="text-gray-600 mb-6">
+                Thank you for contacting us. Our team will respond to you shortly.
+              </p>
+              <Button
+                onClick={() => setShowSuccessModal(false)}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium"
+              >
+                Close
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+      
       <section className="pt-32 pb-16 bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-indigo-50/50 relative overflow-hidden">
-        {/* Background Pattern */}
         <div className="absolute inset-0 professional-dots-background opacity-40"></div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Back Button */}
           <Link 
             to="/" 
             className="inline-flex items-center text-gray-600 hover:text-blue-600 transition-colors duration-200 mb-12 group hover:scale-105 transform duration-300"
@@ -80,7 +130,6 @@ const Contact = () => {
           </Link>
 
           <div className="text-center space-y-8">
-            {/* Animated Logo */}
             <div className="flex justify-center">
               <div className="relative group">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full blur-2xl opacity-30 group-hover:opacity-50 transition-opacity duration-700 animate-pulse-magic"></div>
@@ -90,7 +139,6 @@ const Contact = () => {
                     alt="EmCom Logo" 
                     className="w-14 h-14 object-contain animate-pulse-smooth group-hover:brightness-110 transition-all duration-500"
                   />
-                  {/* Sparkle Effects */}
                   <div className="absolute -top-2 -right-2 w-3 h-3 bg-yellow-400 rounded-full animate-ping"></div>
                   <div className="absolute -bottom-2 -left-2 w-2 h-2 bg-purple-400 rounded-full animate-bounce"></div>
                 </div>
@@ -107,9 +155,7 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* Contact Form Section */}
       <section className="py-20 bg-gray-50 relative overflow-hidden">
-        {/* Background Pattern */}
         <div className="absolute inset-0 professional-dots-background opacity-30"></div>
         
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -124,7 +170,6 @@ const Contact = () => {
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-8">
-              {/* Name and Email */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="group">
                   <label htmlFor="name" className="block text-sm font-bold text-gray-700 mb-3">
@@ -159,32 +204,32 @@ const Contact = () => {
                 </div>
               </div>
 
-              {/* Phone and Subject */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="group">
                   <label htmlFor="phone" className="block text-sm font-bold text-gray-700 mb-3">
-                    Phone Number
+                    Phone Number *
                   </label>
                   <Input
                     id="phone"
                     name="phone"
                     type="tel"
+                    pattern="[0-9]{10}"
+                    required
                     value={formData.phone}
                     onChange={handleChange}
                     className="w-full h-14 text-lg border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-0 transition-all duration-300 hover:border-gray-300"
-                    placeholder="+91 000 000 0000"
+                    placeholder="10 digit phone number"
                   />
                 </div>
                 
                 <div className="group">
                   <label htmlFor="subject" className="block text-sm font-bold text-gray-700 mb-3">
-                    Subject *
+                    Subject
                   </label>
                   <Input
                     id="subject"
                     name="subject"
                     type="text"
-                    required
                     value={formData.subject}
                     onChange={handleChange}
                     className="w-full h-14 text-lg border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-0 transition-all duration-300 hover:border-gray-300"
@@ -193,15 +238,13 @@ const Contact = () => {
                 </div>
               </div>
 
-              {/* Message */}
               <div className="group">
                 <label htmlFor="message" className="block text-sm font-bold text-gray-700 mb-3">
-                  Message *
+                  Message
                 </label>
                 <Textarea
                   id="message"
                   name="message"
-                  required
                   value={formData.message}
                   onChange={handleChange}
                   rows={8}
@@ -210,7 +253,6 @@ const Contact = () => {
                 />
               </div>
 
-              {/* Submit Button */}
               <div className="flex justify-center pt-8">
                 <div className="relative group">
                   <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 rounded-2xl blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-700 animate-pulse-magic"></div>
@@ -222,7 +264,7 @@ const Contact = () => {
                     {isSubmitting ? (
                       <>
                         <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-3"></div>
-                        Sending Magic...
+                        Sending...
                       </>
                     ) : (
                       <span className="flex items-center space-x-3">
@@ -235,7 +277,6 @@ const Contact = () => {
               </div>
             </form>
 
-            {/* Additional Info */}
             <div className="mt-16 pt-12 border-t border-gray-200 text-center">
               <div className="flex items-center justify-center space-x-3 text-green-600 mb-6">
                 <CheckCircle className="w-6 h-6 animate-pulse" />
