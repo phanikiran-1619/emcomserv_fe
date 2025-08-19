@@ -1,19 +1,14 @@
 FROM node:20-alpine
 
-# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies
 RUN npm install
 
-# Copy the rest of the application code
 COPY . .
 
-# Expose the port used by the development server
 EXPOSE 8000
 
-# Start the development server
-CMD ["npm", "start"]
+# Start React dev server on 0.0.0.0 so it is reachable
+CMD ["npm", "start", "--", "--host", "0.0.0.0", "--port", "8000"]
